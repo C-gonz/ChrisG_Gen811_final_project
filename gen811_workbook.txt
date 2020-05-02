@@ -1,33 +1,28 @@
 
 
 
-#4-26-20 (obtaining genomes)
+5-2-20 
+(obtaining genome-derived protein datasets via wget)
+
+command used to obtain public preotien datasets for my T1R analyses
+wget <ftp link for dataset>
+
+ftp links used to obtain 5 reference genomes
+
+Reference purple sea urchin genome-derived proteins: 
+
+Reference Mus Musculus genome-derived proteins:
+
+Reference Zebrafish genome-derived proteins:
+
+Reference Drosophila genome-derived proteins:
+
+Reference Cnidarian (Hydra vulgaris) genome-derived proteins:
 
 
 
-#command used to obtain public reference genomes for my TR analyses
-wget <ftp link for genome>
-
-#ftp links used to obtain 5 reference genomes
-
-#Reference purple sea urchin genome: 
-ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/235/GCF_000002235.5_Spur_5.0/GCF_000002235.5_Spur_5.0_genomic.fna.gz
-
-#Reference Mus Musculus genome:
-https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.26_GRCm38.p6/GCF_000001635.26_GRCm38.p6_genomic.fna.gz
-
-#Reference Zebrafish genome:
-https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/035/GCF_000002035.6_GRCz11/GCF_000002035.6_GRCz11_genomic.fna.gz
-
-#Reference Drosophila genome:
-https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/215/GCF_000001215.4_Release_6_plus_ISO1_MT/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic.fna.gz
-
-#Reference Cnidarian (Hydra vulgaris) genome:
-https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/004/095/GCF_000004095.1_Hydra_RP_1.0/GCF_000004095.1_Hydra_RP_1.0_genomic.fna.gz
-
-
-
-#4-26-20 (revised project plans)
+4-26-20 AND 5-2-20 
+(revised project plans; narrowed focus to just codign sequences assessed via genome-based protein datasets, and the 3 T1R's (in mammals at least, T2Rs have nearly 30 homologs and would be a bit too much for this.))
 
 
 
@@ -39,9 +34,9 @@ The identification and number of TRs is less known outside of Mammalia. The gene
 
 Given the known instances of gene duplication in vertebrates and the apparent lack of homologs in protostomes, I would like to investigate the following:
 
-What is the gene structure (coding and non-coding sequences) of TRs amongst different deuterstome taxa? (Non-chordata vs chordata, and mammal vs non-mammal) 
+What is the protein structure (coding sequences) of T1Rs amongst different deuterstome taxa? (Non-chordata vs chordata, and mammal vs non-mammal) 
 
-How many copies of each taste receptor do these different taxa have?
+How many copies of T1Rs do these different taxa have? A quick lit review suggests mammals have 3, but how widespread is this?
 
 Are there any similar sequences or homologs in some protostomes? (Personal communications with Dave Plachetski suggests some cnidarians may have them).
 
@@ -49,20 +44,20 @@ Are there any similar sequences or homologs in some protostomes? (Personal commu
 >What software will you need to complete your analysis?
 
 For reference genomes:
-	- BLAST Suite (used to blast T1R and T2R homologs from mice and Drosophila in order to ID these genes in the other assemblies.)
-	- MSA (MAFFT) (Compare exons/introns and functional regions of genes identified
+	- BLAST Suite (used to blast T1R homologs from Mus musculus in order to ID these genes in the other assemblies.)
+	- MSA (MAFFT) (Compare motifs / domains and functional regions of genes identified
 
 
 >What are your expected results? What do you hypothesize that you will find?
 
-Based in part on previously published knowledge, I tentatively expect that Mammals will have the largest number of Taste 1 and 2 Receptors; however, I should be able to identify them in any other chordate, as well as deuterostomes in general.
+Based in part on previously published knowledge, I tentatively expect that Mammals will have the largest number of Taste 1 Receptors; however, I should be able to identify them in any other chordate, as well as deuterostomes in general.
 
 In regard to Protostomes, I anticipate finding potentially similar sequences; whether they will be true homologs or (maybe?) structurally similar but unrelated remains to be seen.
 
 
 >What are the steps (as far as you can tell) to your analysis?
-	- Download all genome data via wget
-	- Download T1R and T2R homologs from Mus musculus and Drosophila melanogaster
-	-ID full genes of interest (T1R T2R, and similar sequences / homologs) from genomes
-	-Use MSA to compare gene sequences
-
+	- Download all genome-derived datasets via wget
+	- Download the 3 mammalian T1R homologs from Mus musculus
+	- ID full genes of interest (T1Rs and similar sequences / homologs) from protein datasets
+	- Not entirely sure of approach yet, but need to ID + annotate functional regions. I know SMART can do this....
+	- Use MSA to compare gene sequences 
