@@ -1,3 +1,17 @@
+5-8-20
+(finalizing BLASTp script)
+
+- I wanted to improve the efficiceny of the blasting process and include additional informative text handling; see "db_and_blastp.slurm" in the "scripts" file within this repository for full script content.
+
+- Summary of current script tasks:
+Make a for loop that accomplishes the following:
+	1. make blast databases (suffix = gz_db.*) for all sequences in current directory that end in .gz
+	2. Use BLASTp on each database, with the 3 mouse T1Rs as the query. Output files end in .out
+	3. Append to each output file the number of unique hits, and the number of unique hits containing "taste", "metabotropic", or "vomeronasal" terms in the title.
+	4. Append the full title name for all unique hits containing any of the above terms into one summary file ("unique_GPCR_seqs.txt") 
+
+
+
 5-6+7-20
 (Rationale for and creating the BLAST database + running BLASTp)
 
