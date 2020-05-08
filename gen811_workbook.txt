@@ -1,24 +1,30 @@
-5-6,7-20
+5-6+7-20
 (Rationale for and creating the BLAST database + running BLASTp)
 
 - I was not sure if I should make the mouse T1Rs the BLAST database or the query; since we want to examine protein hits from each species of interest, I decided it made most sense to use the mouse T1Rs as the BLAST database and the genome-based protein datasets as BLAST queries.
 
 - REVISION: I found that resulting query seqs are only given in accession / ID number, while the database hits have the -stitle option. After reviewing -outfmt options via the user manual, I've conluded I can most easily get seq annotation info by making each species' protein datasets a BLAST database, then querying these with the 3 T1R mouse seqs.
 
-- Still looking for actual citation support, but a common basic E-value for homology ID is 1e-05.
+- Still looking for actual citation support, but a common basic e-value for homology ID is 1e-05.
 
-First I decided to set up a script pipeline and test it by using the mouse T1Rs to query the mouse proteins dataset. The following commands were written in the SLURM script "db_and_blastp.slurm"
+First I decided to set up a script pipeline and test it by using the mouse T1Rs to query the mouse proteins dataset. The following commands were written in the SLURM script "db_and_blastp.slurm":
 
 ## make the blast database from the mus_musculus genome-based protein dataset 
 gzip -dc GCF_000001635.26_GRCm38.p6_protein.faa.gz | makeblastdb -out mouse -dbtype prot -title GCF_000001635.26_GRCm38.p6_protein.faa
 
-##v blastp the 3 mus_musculus T1Rs against each species' BLAST database, then count the	number of 
-## unique query seqs with significant hits and append this count to each blast output file.
+## blastp the 3 mus_musculus T1Rs against each species' BLAST database  
 blastp -db mouse -query mus_musculus_T1Rs.fas -evalue 1e-05 -num_threads 24 -out mouse_blastp.out -outfmt '6 qseqid qlen length pident gaps evalue stitle'
-unique_seqs=$(cut -f 7 mouse_blastp.out | sort | uniq -c | wc -l)
-echo There are $unique_seqs unique query sequences with significant hits >> mouse_blastp.out
 
-This resulted in 276 significant mouse protein hits.  
+## Identify the total number of unique query seqs with significant hits, and those with selected key 
+## terms in their title. Append all counts to each blast output file.
+unique_seqs=$(cut -f 7 mouse_blastp.out | sort | uniq | wc -l)
+taste_seqs=$(cut -f 7 mouse_blastp.out | sort | uniq | grep -i "taste" | wc -l)
+metabotropic_seqs=$(cut -f 7 mouse_blastp.out | sort | uniq | grep -i "metabotropic" | wc -l)
+vomeronasal_seqs=$(cut -f 7 mouse_blastp.out | sort | uniq | grep -i "vomeronasal" | wc -l)
+
+echo There are $unique_seqs unique query sequences with significant hits $metabotropic_seqs contain the term metabotropic $taste_seqs contain taste and vomeronasal_seqs contain vomeronasal >> mouse_blastp.out
+
+This resulted in 275 significant mouse protein hits; of these, 4 had the term "taste" in their title, while 41 had the term "metabotropic".
 
 
 
