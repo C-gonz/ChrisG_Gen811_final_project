@@ -1,7 +1,14 @@
-5-8-20
-(finalizing BLASTp script)
+5-9-20 (final blast script)
+- See "db_and_blastp.slurm" in the "scripts" file within this repository for full script content. Revision notes are as follows:
+	1. Made each blast.out file be sorted according to e-value
+	2. Removed commands for additional sorted file containing unique chemoreceptor terms (deemed this file 
+           ultimately reundant; uniq technically removes valid hits, and grep+sort can be used 
+	   if needed on command line.)
 
-- I wanted to improve the efficiceny of the blasting process and include additional informative text handling; see "db_and_blastp.slurm" in the "scripts" file within this repository for full script content.
+
+
+5-8-20 (revising BLASTp script)
+- I wanted to improve the efficiceny of the blasting process and include additional informative text handling.
 
 - Summary of current script tasks:
 Make a for loop that accomplishes the following:
@@ -10,11 +17,40 @@ Make a for loop that accomplishes the following:
 	3. Append to each output file the number of unique hits, and the number of unique hits containing "taste", "metabotropic", or "vomeronasal" terms in the title.
 	4. Append the full title name for all unique hits containing any of the above terms into one summary file ("unique_GPCR_seqs.txt") 
 
+CURRENT VERSION:
+## For loop to run through each gzip fasta file, make a BLAST database from it, then blast a set query against each database. 
+for item in ./*.gz
+do
+    ## make the blast database from the mus_musculus genome-based protein dataset 
+    gzip -dc $item | makeblastdb -out ${item%.*}_db -dbtype prot -title $item
+
+    ## blastp the 3 mus_musculus T1Rs against each species' BLAST database  
+    blastp -db ${item%.*}_db -query mus_musculus_T1Rs.fas -evalue 1e-05 -num_threads 24 -out ${item%.*}.out -outfmt '6 qseqid qlen length pident gaps evalue stitle'
+
+    ## Identify the total number of unique query seqs with significant hits, and those with selected key
+    ## terms in their title. Append all counts to each blast output file, and use grep to ID & append GPCR seq titles
+    ## & their e-values to one file.
+    unique_seqs=$(cut -f 7 ${item%.*}.out | sort | uniq | wc -l)
+
+    taste_seqs=$(cut -f 7 ${item%.}.out | sort | uniq | grep -i "taste" | wc -l)
+    (cut -f 6,7 ${item%.*}.out | sort | uniq | grep -i "taste") >> unique_GPCR_seqs.txt
+
+    metabotropic_seqs=$(cut -f 7 ${item%.}.out | sort | uniq | grep -i "metabotropic" | wc -l)
+    (cut -f 6,7 ${item%.*}.out | sort | uniq | grep -i "metabotropic") >> unique_GPCR_seqs.txt
+
+    vomeronasal_seqs=$(cut -f 7 ${item%.}.out | sort | uniq | grep -i "vomeronasal" | wc -l)
+    (cut -f 6,7 ${item%.*}.out | sort | uniq | grep -i "vomeronasal") >> unique_GPCR_seqs.txt
+
+    ## echo statements to record the significant hit seqs in the blast output file and the T1Rs_blastp.output file.
+    echo There are $unique_seqs unique query sequences with significant hits $metabotropic_seqs contain the term metabotropic $taste_seqs contain taste and $vomeronasal_seqs contain vomeronasal >> ${item%.*}.out
+    echo In ${item%.}.out there are $unique_seqs unique query sequences with significant hits $metabotropic_seqs contain the term metabotropic $taste_seqs contain taste and $vomeronasal_seqs contain vomeronasal
+    echo Database creation and BLASTp query for $item is complete
+done
 
 
-5-6+7-20
-(Rationale for and creating the BLAST database + running BLASTp)
 
+
+5-6+7-20 (Rationale for and creating the BLAST database + running BLASTp)
 - I was not sure if I should make the mouse T1Rs the BLAST database or the query; since we want to examine protein hits from each species of interest, I decided it made most sense to use the mouse T1Rs as the BLAST database and the genome-based protein datasets as BLAST queries.
 
 - REVISION: I found that resulting query seqs are only given in accession / ID number, while the database hits have the -stitle option. After reviewing -outfmt options via the user manual, I've conluded I can most easily get seq annotation info by making each species' protein datasets a BLAST database, then querying these with the 3 T1R mouse seqs.
@@ -42,17 +78,14 @@ This resulted in 275 significant mouse protein hits; of these, 4 had the term "t
 
 
 
-5-2-20
-(the Mus musculus T1Rs used as query proteins)
+5-2-20   (the Mus musculus T1Rs used as query proteins)
 >NP_114073.1 taste receptor type 1 member 1 precursor [Mus musculus]
 >NP_114079.1 taste receptor type 1 member 2 precursor [Mus musculus]
 >NP_114078.1 taste receptor type 1 member 3 precursor [Mus musculus]
 
 
 
-5-2-20 
-(obtaining genome-derived protein datasets via wget)
-
+5-2-20   (obtaining genome-derived protein datasets via wget)
 command used to obtain public preotien datasets for my T1R analyses:
 wget <ftp link for dataset>
 
