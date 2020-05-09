@@ -1,5 +1,86 @@
-5-8-20 (db_and_blastp.slurm script for BLASTp pipeline.)
+5-9-20 (db_and_blastp.slurm script for BLASTp pipeline.)
 
+#!/bin/bash
+
+## Note - Slurm script comments require two hash symbols (##).  A single
+## hash symbol immediately followed by SBATCH indicates an SBATCH
+## directive.  "##SBATCH" indicates the SBATCH command is commented
+## out and is inactive.
+
+#SBATCH --exclude=node117,node118
+
+## NTasks is not thread count, be sure to leave it set at 1
+#SBATCH --ntasks=1
+
+## If your program will be using less than 24 threads, or you
+## require more than 24 threads, set cpus-per-task to the 
+## desired threadcount.  Leave this commented out for the
+## default 24 threads.
+##SBATCH --cpus-per-task=2
+
+## You will need to specify a minimum amount of memory in the
+## following situaitons:
+##   1. If you require more than 128GB of RAM, specify either:
+##      a. "--mem=512000" for at least 512GB of RAM (6 possible nodes)
+##      b. "--mem=1000000" for at least 1TB of RAM (2 possible nodes)
+##   2. If you are running a job with less than 24 threads, you will
+##      normally be given your thread count times 5.3GB in RAM.  So
+##      a single thread would be given about 5GB of RAM.  If you
+##      require more, please specify it as a "--mem=XXXX" option,
+##      but avoid using all available RAM so others may share the node.
+##SBATCH --mem=512000
+
+## Normally jobs will restart automatically if the cluster experiences
+## an unforeseen issue.  This may not be desired if you want to retain
+## the work that's been performed by your script so far.   
+## --no-requeue
+
+## Normal Slurm options
+## SBATCH -p shared
+#SBATCH --job-name="Blastp_T1Rs"
+#SBATCH --output=T1Rs_blastp.output
+
+## Load the appropriate modules first.  Linuxbrew/colsa contains most
+## programs, though some are contained within the anaconda/colsa
+## module.  Refer to http://premise.sr.unh.edu for more info.
+module purge
+module load linuxbrew/colsa
+##module load anaconda/colsa
+##source activate <PROGRAM HERE>
+
+
+## Instruct your program to make use of the number of desired threads.
+## As your job will be allocated an entire node, this should normally
+## be 24.
+
+## Variable used for proper text sorting in the for loop results.
+TAB=`echo -e "\t"`
+
+## For loop to run through each gzip fasta file, make a BLAST database from it, then blast a set query against each database. 
+for item in ./*.gz
+do
+    ## make the blast database from the mus_musculus genome-based protein dataset 
+    gzip -dc $item | makeblastdb -out ${item%.*}_db -dbtype prot -title $item
+
+    ## blastp the 3 mus_musculus T1Rs against each species' BLAST database, then sort the output according to reverse bit score.
+    blastp -db ${item%.*}_db -query mus_musculus_T1Rs.fas -evalue 1e-05 -num_threads 24 -out ${item%.*}.out -outfmt '6 qseqid qlen length pident gaps bitscore evalue stitle'
+    sort -t"$TAB" -k6 -gr ${item%.*}.out > ${item%.*}_sorted.out
+    rm ${item%.*}.out
+
+    ## Identify the total number of unique query seqs with significant hits, and those with selected key
+    ## terms in their title. Append all counts to each blast output file.
+    unique_seqs=$(cut -f 8 ${item%.*}_sorted.out | sort | uniq | wc -l)
+    taste_seqs=$(cut -f 8 ${item%.*}_sorted.out | sort | uniq | grep -i "taste" | wc -l)
+    metabotropic_seqs=$(cut -f 8 ${item%.*}_sorted.out | sort | uniq | grep -i "metabotropic" | wc -l)
+    vomeronasal_seqs=$(cut -f 8 ${item%.*}_sorted.out | sort | uniq | grep -i "vomeronasal" | wc -l)
+
+    ## note the significant hit seqs and their key terms in each blast output file 
+    echo There are $unique_seqs unique query sequences with significant hits $metabotropic_seqs contain the term metabotropic $taste_seqs contain taste and $vomeronasal_seqs contain vomeronasal >> ${item%.*}_sorted.out
+
+    ## echos for the T1Rs_blastp.output file
+    echo In ${item%.*}_sorted.out there are $unique_seqs unique query sequences with significant hits $metabotropic_seqs contain the term metabotropic $taste_seqs contain taste and $vomeronasal_seqs contain vomeronasal
+    echo Database creation and BLASTp query for $item is complete
+done
 
 
 
