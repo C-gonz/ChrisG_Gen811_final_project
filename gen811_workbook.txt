@@ -4,7 +4,7 @@
 	2. Removed commands for additional sorted file containing unique chemoreceptor terms (deemed this file 
            ultimately reundant; uniq technically removes valid hits, and grep+sort can be used 
 	   if needed on command line.)
-
+- This script was designed in part with aid from various websites and example BLAST scripts from Dr. Dave Plachetzki.
 
 
 5-8-20 (revising BLASTp script)
