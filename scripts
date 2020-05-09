@@ -57,30 +57,30 @@ module load linuxbrew/colsa
 for item in ./*.gz
 do
     ## make the blast database from the mus_musculus genome-based protein dataset 
-    gzip -dc $item | makeblastdb -out ${item#.gz%.}_db -dbtype prot -title $item
+    gzip -dc $item | makeblastdb -out ${item%.*}_db -dbtype prot -title $item
 
     ## blastp the 3 mus_musculus T1Rs against each species' BLAST database  
-    blastp -db ${item%.}_db -query mus_musculus_T1Rs.fas -evalue 1e-05 -num_threads 24 -out ${item%.}.out -outfmt '6 qseqid qlen length pident gaps evalue stitle'
+    blastp -db ${item%.*}_db -query mus_musculus_T1Rs.fas -evalue 1e-05 -num_threads 24 -out ${item%.*}.out -outfmt '6 qseqid qlen length pident gaps evalue stitle'
 
     ## Identify the total number of unique query seqs with significant hits, and those with selected key
-    ## terms in their title. Append all counts to each blast output file, and use grep to ID & append GPCR seq titles to one file.
-    unique_seqs=$(cut -f 7 ${item%.}.out | sort | uniq | wc -l)
+    ## terms in their title. Append all counts to each blast output file, and use grep to ID & append GPCR seq titles
+    ## & their e-values to one file.
+    unique_seqs=$(cut -f 7 ${item%.*}.out | sort | uniq | wc -l)
 
     taste_seqs=$(cut -f 7 ${item%.}.out | sort | uniq | grep -i "taste" | wc -l)
-    (cut -f 7 ${item%.}.out | sort | uniq | grep -i "taste") >> unique_GPCR_seqs.txt
+    (cut -f 6,7 ${item%.*}.out | sort | uniq | grep -i "taste") >> unique_GPCR_seqs.txt
 
     metabotropic_seqs=$(cut -f 7 ${item%.}.out | sort | uniq | grep -i "metabotropic" | wc -l)
-    (cut -f 7 ${item%.}.out | sort | uniq | grep -i "metabotropic") >> unique_GPCR_seqs.txt
+    (cut -f 6,7 ${item%.*}.out | sort | uniq | grep -i "metabotropic") >> unique_GPCR_seqs.txt
 
     vomeronasal_seqs=$(cut -f 7 ${item%.}.out | sort | uniq | grep -i "vomeronasal" | wc -l)
-    (cut -f 7 ${item%.}.out | sort | uniq | grep -i "vomeronasal") >> unique_GPCR_seqs.txt
+    (cut -f 6,7 ${item%.*}.out | sort | uniq | grep -i "vomeronasal") >> unique_GPCR_seqs.txt
 
     ## echo statements to record the significant hit seqs in the blast output file and the T1Rs_blastp.output file.
-    echo There are $unique_seqs unique query sequences with significant hits $metabotropic_seqs contain the term metabotropic $taste_seqs contain taste and $vomeronasal_seqs contain vomeronasal >> ${item%.}.out
+    echo There are $unique_seqs unique query sequences with significant hits $metabotropic_seqs contain the term metabotropic $taste_seqs contain taste and $vomeronasal_seqs contain vomeronasal >> ${item%.*}.out
     echo In ${item%.}.out there are $unique_seqs unique query sequences with significant hits $metabotropic_seqs contain the term metabotropic $taste_seqs contain taste and $vomeronasal_seqs contain vomeronasal
     echo Database creation and BLASTp query for $item is complete
 done
-
 
 
 
