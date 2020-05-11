@@ -1,3 +1,20 @@
+5-11-20 (post-BLAST analyses and results compiling)
+
+- Used the .out blast results appended grep searches to ID the number of hits with "“Metabotropic," “taste," and “vomeronasal," key terms; these made Table 1 in the final paper.
+
+- wrote a script ("top_hits.sh") to isolate the top 2 bit-score hits for each mouse T1R sequence for every database. See scripts file for full bash script.
+
+- Used the results from top_hits.sh to format a table in Pages for the final paper, Fig. 1.
+
+- Copied all accession numbers for the 3 mouse T1R proteins and top 2 BLASTp hit proteins:
+$nano all_accessions.txt
+$sort all_accessions.txt | uniq >> unique_accessions.txt 
+- These accessions were then used on Batch Web CD-Search Tool <https://www.ncbi.nlm.nih.gov/Structure/bwrpsb/bwrpsb.cgi?> to identify protein domains. These domains were then saved in concise format to the file "concise_WebCD_results.txt"
+
+
+
+
+
 5-9-20 (final blast script)
 - See "db_and_blastp.slurm" in the "scripts" file within this repository for full script content. Revision notes are as follows:
 	1. Made each blast.out file be sorted according to e-value
