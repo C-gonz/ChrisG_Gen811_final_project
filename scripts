@@ -1,3 +1,13 @@
+5-11-20 (top_hits.sh script for isolating top 2 BLAST hits for each mouse T1R homolog according to bit score)
+for item in ./*.out
+do
+    grep "^NP_114073.1" $item | head -n 2 | cut -f 1,7,8 >> top_2_hits.tsv
+    grep "^NP_114079.1" $item | head -n 2 | cut -f 1,7,8 >> top_2_hits.tsv
+    grep "^NP_114078.1" $item | head -n 2 | cut -f 1,7,8 >> top_2_hits.tsv
+done
+
+
+
 5-9-20 (db_and_blastp.slurm script for BLASTp pipeline.)
 
 #!/bin/bash
