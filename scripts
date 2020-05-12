@@ -1,3 +1,11 @@
+5-11-20 (iqTree.slurm script for building a ML tree with ultra-fast bootstrap support. After 1st run, a 2nd line was added and run alone in order to make a booy+alrt values tree.)
+#!/bin/bash
+[largely same SLURM content as given in db_and_blastp.slurm]
+iqtree -m TEST -bb 1000 -alrt 1000 -s unique_seqs_mafft.fasta
+iqtree -m TEST -te unique_seqs_mafft.fasta.contree -alrt 1000 -pre alrt_out -s unique_seqs_mafft.fasta
+
+
+
 5-11-20 (top_hits.sh script for isolating top 2 BLAST hits for each mouse T1R homolog according to bit score)
 for item in ./*.out
 do
@@ -91,29 +99,3 @@ do
     echo In ${item%.*}_sorted.out there are $unique_seqs unique query sequences with significant hits $metabotropic_seqs contain the term metabotropic $taste_seqs contain taste and $vomeronasal_seqs contain vomeronasal
     echo Database creation and BLASTp query for $item is complete
 done
-
-
-
-#4-26-20
-
-#command used to obtain puiblic reference genomes for my TR analyses
-wget <ftp link for genome>
-
-#ftp links used to obtain 5 reference genomes
-
-#Reference purple sea urchin genome: 
-ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/235/GCF_000002235.5_Spur_5.0/GCF_000002235.5_Spur_5.0_genomic.fna.gz
-
-#Reference Mus Musculus genome:
-https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.26_GRCm38.p6/GCF_000001635.26_GRCm38.p6_genomic.fna.gz
-
-#Reference Zebrafish genome:
-https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/035/GCF_000002035.6_GRCz11/GCF_000002035.6_GRCz11_genomic.fna.gz
-
-#Reference Drosophila genome:
-https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/215/GCF_000001215.4_Release_6_plus_ISO1_MT/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic.fna.gz
-
-#Reference Cnidarian (Hydra vulgaris) genome:
-https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/004/095/GCF_000004095.1_Hydra_RP_1.0/GCF_000004095.1_Hydra_RP_1.0_genomic.fna.gz
-
-
