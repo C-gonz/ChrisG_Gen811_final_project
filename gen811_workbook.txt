@@ -33,7 +33,13 @@ sort all_accessions.txt | uniq >> unique_accessions.txt
 - Ran iqTree Maximum Liklihood phylogeny:
 	iqtree -m TEST -bb 1000 -alrt 1000 -s unique_seqs_mafft.fasta
 	- IQtree identified that MGR_isoform_B_D.melanogaster and MGR_isoform_A_D.melanogaster are identical seqs; B was thus removed and the alignment + tree was redone.
-	- Tree from unique_seqs_mafft.fasta.treefile is below; formatting for the final paper was done in FigTree V1.4.4.
+	- Tree from unique_seqs_mafft.fasta.contree; formatting for the final paper was done in FigTree V1.4.4.
+	- NOTE: since this tree is 100% bifurcating, I redid the analysis so that BOTH alrt and ultrafast-bootstrap values can be plotted on the tree:
+	iqtree -m TEST -te unique_seqs_mafft.fasta.contree -alrt 1000 -pre alrt_out -s unique_seqs_mafft.fasta
+	- INTERPRETATION NOTE: according to <http://www.iqtree.org/doc/Frequently-Asked-Questions>, "One would typically start to rely on the clade if its SH-aLRT >= 80% and UFboot >= 95%."
+
+	- Final IQ-tree provided in file "alrt_out.iqtree":
+	(T1R1_M.musculus:0.0049984468,(((((T1R3_M.musculus:0.7648204794,T1R3_D._rerio:0.7723926224)98/100:0.3457686131,(((((MGR_isoform_A_D.melanogaster:0.4396283336,MGR_3_isoform_2_S.purpuratus:0.4630941674)100/100:0.6506288975,MGR_3_isoform_1_S.purpuratus:1.0323371810)56/23.9:0.1145821208,(((PREDICTED__ECsR-like_1_H._vulgaris:0.2731929850,PREDICTED__ECsR-like_3_H._vulgaris:0.4892530975)100/100:0.5624949806,PREDICTED__MGR_3-like_H._vulgaris:0.8869218034)100/99.9:0.4869376309,PREDICTED__ECsR-like_2_H._vulgaris:1.2353730378)64/50:0.1321369912)89/100:0.3518266505,(ECsR_isoform_X2_H.sapiens:0.0021776279,ECsR_isoform_X1_H.sapiens:0.0000028993)100/100:0.6542989935)81/83.6:0.1710079628,(Fz_Homolog_H.sapiens:0.6842152298,Fz_isoform_A_D.melanogaster:0.5271155679)100/100:2.9039691663)72/90.1:0.2212909629)44/25.5:0.1016823701,T1R2_precursor_M.musculus:0.8756620123)59/69.9:0.0899850387,(T1R2.2_precursor_D._rerio:0.5493423875,((T2R38_H.sapiens:1.1547801462,T2R20_H.sapiens:0.9569285618)91/82.2:0.2950339018,T2R1_H.sapiens:0.6741955682)100/100:2.4657101882)73/93:0.3547359567)94/93:0.1579358268,T1R1_D._rerio:0.7028748928)100/100:0.5872001353,T1R1_isoform_X1_M.musculus:0.0355342103);
 
 
 
