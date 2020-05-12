@@ -1,4 +1,11 @@
-5-11-20 (post-BLAST analyses and results compiling)
+5-12-20 (header correction)
+	- (lost notes on this due to github commit error)
+     	- In the fasta files, MAFFT alignment, and IQ tree files, there is a sequence labeld T1R1; however, this is actually T1R2.
+	0 this header was corrected in the fasta files and the tree reported in the final paper; the IQtree files still contain the wrong header.
+
+
+
+5-11-20 (post-BLAST analyses, results compiling, MAFFT alignment, IQtree ML phylogeny)
 - Used the .out blast results appended grep searches to ID the number of hits with "Metabotropic," “taste," and “vomeronasal," key terms; these made Table 1 in the final paper.
 
 - wrote a script ("top_hits.sh") to isolate the top 2 bit-score hits for each mouse T1R sequence for every database. See scripts file for full bash script.
