@@ -1,18 +1,37 @@
 5-11-20 (post-BLAST analyses and results compiling)
 
-- Used the .out blast results appended grep searches to ID the number of hits with "“Metabotropic," “taste," and “vomeronasal," key terms; these made Table 1 in the final paper.
+- Used the .out blast results appended grep searches to ID the number of hits with "Metabotropic," “taste," and “vomeronasal," key terms; these made Table 1 in the final paper.
 
 - wrote a script ("top_hits.sh") to isolate the top 2 bit-score hits for each mouse T1R sequence for every database. See scripts file for full bash script.
 
 - Used the results from top_hits.sh to format a table in Pages for the final paper, Fig. 1.
 
 - Copied all accession numbers for the 3 mouse T1R proteins and top 2 BLASTp hit proteins:
-$nano all_accessions.txt
-$sort all_accessions.txt | uniq >> unique_accessions.txt 
+nano all_accessions.txt
+sort all_accessions.txt | uniq >> unique_accessions.txt 
 - These accessions were then used on Batch Web CD-Search Tool <https://www.ncbi.nlm.nih.gov/Structure/bwrpsb/bwrpsb.cgi?> to identify protein domains. These domains were then saved in concise format to the file "concise_WebCD_results.txt"
 
+- Prepared for MAFFT alignments:
+	- Used NCBI Batch Entrez <https://www.ncbi.nlm.nih.gov/sites/batchentrez> to pull sequences from the unique accession numbers provided by unique_accessions.txt, and saved them all in "unique_seqs.fasta"  
+	- For convenient reading, I edited the FASTA headers as follows:
+		- T1R1, etc. for any long-form descriptions of these proteins
+		- metabotropic glutamate receptor --> MGR
+		- extracellular calcium-sensing receptor --> ECsR
+	- I added a number of "outgroup" FASTA sequences to unique_accessions.txt, as assessed by phylogenetic work published in Fredriksson et. al., 2003. These are as follows:
+>AAC51174.1 frizzled homolog [Homo sapiens]
+>NP_524812.1 frizzled, isoform A [Drosophila melanogaster]
+>NP_789787.5 taste receptor type 2 member 38 [Homo sapiens]
+>NP_795370.2 taste receptor type 2 member 20 [Homo sapiens]
+>NP_062545.1 taste receptor type 2 member 1 [Homo sapiens]
+>XP_005247894.1 extracellular calcium-sensing receptor isoform X2 [Homo sapiens]
+>XP_006713852.1 extracellular calcium-sensing receptor isoform X1 [Homo sapiens]
+	- aligned seqs: 
+		mafft --auto unique_seqs.fasta > unique_seqs_mafft.fasta
+			- auto program chose L-INS-i method
+			- output generated to stdout was copied into "unique_seqs_mafft.out"
 
-
+- Ran iqTree Maximum Liklihood phylogeny:
+     iqtree -m TEST -s unique_seqs_mafft.fasta
 
 
 5-9-20 (final blast script)
