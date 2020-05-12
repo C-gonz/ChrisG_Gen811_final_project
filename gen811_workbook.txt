@@ -25,13 +25,18 @@ sort all_accessions.txt | uniq >> unique_accessions.txt
 >NP_062545.1 taste receptor type 2 member 1 [Homo sapiens]
 >XP_005247894.1 extracellular calcium-sensing receptor isoform X2 [Homo sapiens]
 >XP_006713852.1 extracellular calcium-sensing receptor isoform X1 [Homo sapiens]
+	- NOTE: found later on that some seqs, despite havign different accession numbers, were identical. These are denoted in final paper Fig. 1; duplicate seqs with different accession numbers were thus manually removed from "unique_seqs.fasta." 
 	- aligned seqs: 
 		mafft --auto unique_seqs.fasta > unique_seqs_mafft.fasta
 			- auto program chose L-INS-i method
 			- output generated to stdout was copied into "unique_seqs_mafft.out"
 
 - Ran iqTree Maximum Liklihood phylogeny:
-     iqtree -m TEST -s unique_seqs_mafft.fasta
+	iqtree -m TEST -s unique_seqs_mafft.fasta
+	- IQtree identified that MGR_isoform_B_D.melanogaster and MGR_isoform_A_D.melanogaster are identical seqs; for time's sake these were left in the analysis for now.
+	- Tree from unique_seqs_mafft.fasta.treefile is below; formatting for the final paper was done in FigTree V1.4.4.
+(T1R1_M.musculus:0.0043423010,(((((T1R3_M.musculus:0.7774026114,T1R3_D._rerio:0.7701108277):0.3619890786,(((((((MGR_isoform_A_D.melanogaster:0.0000010005,MGR_isoform_B_D.melanogaster:0.0000010005):0.4336721506,MGR_3_isoform_2_S.purpuratus:0.4794910010):0.6448637987,MGR_3_isoform_1_S.purpuratus:1.0674940193):0.0742220070,PREDICTED__ECsR-like_2_H._vulgaris:1.3227086948):0.0855703273,((PREDICTED__ECsR-like_1_H._vulgaris:0.2759401261,PREDICTED__ECsR-like_3_H._vulgaris:0.4926651475):0.5607401142,PREDICTED__MGR_3-like_H._vulgaris:0.9001779996):0.5471175329):0.3169299873,(ECsR_isoform_X2_H.sapiens:0.0021882880,ECsR_isoform_X1_H.sapiens:0.0000026977):0.6866452077):0.1269925138,(Fz_Homolog_H.sapiens:0.6862365800,Fz_isoform_A_D.melanogaster:0.5619700336):2.6649153112):0.2615418194):0.1020662593,T1R2_precursor_M.musculus:0.8643977964):0.0682045709,(T1R2.2_precursor_D._rerio:0.5564803947,((T2R38_H.sapiens:1.1655944581,T2R20_H.sapiens:0.9765277487):0.2830585831,T2R1_H.sapiens:0.6995164217):2.4872110881):0.3512964184):0.1678563950,T1R1_D._rerio:0.7123839534):0.6066261120,T1R1_isoform_X1_M.musculus:0.0365126208);
+
 
 
 5-9-20 (final blast script)
