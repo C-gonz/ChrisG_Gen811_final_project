@@ -1,0 +1,28 @@
+NP_001034614.2
+NP_001034717.1
+NP_001077325.1
+NP_001259076.1
+NP_114073.1
+NP_114078.1
+NP_114079.1
+NP_524639.2
+XP_006538537.1
+XP_012557482.1
+XP_012559805.1
+XP_012561582.1
+XP_012563439.1
+XP_030828737.1
+XP_030828738.1
+XP_030838074.1
+XP_030838075.1
+
+OUTGROUP SEQS:
+
+>AAC51174.1 frizzled homolog [Homo sapiens]
+>NP_524812.1 frizzled, isoform A [Drosophila melanogaster]
+>NP_789787.5 taste receptor type 2 member 38 [Homo sapiens]
+>NP_795370.2 taste receptor type 2 member 20 [Homo sapiens]
+>NP_062545.1 taste receptor type 2 member 1 [Homo sapiens]
+>XP_005247894.1 extracellular calcium-sensing receptor isoform X2 [Homo sapiens]
+>XP_006713852.1 extracellular calcium-sensing receptor isoform X1 [Homo sapiens]
+
