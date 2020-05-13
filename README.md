@@ -3,7 +3,7 @@ Final project repository for Genomics and Bioinformatics class.
 
 "gen811_workbook.txt" details all notes (organized chroonologically by date) for this project.
 
-"scripts" provides only a chronological list of final commands (or entire scripts) used for this project; notes, revisions, and details are under the corresponding date in the workbook file.
+"scripts" provides only a chronological list of entire scripts used for this project; notes, revisions, and simpler commands are under the corresponding date in the workbook file.
 
 "Results" directory contains all files needed to remake the final paper tables and figures. 
 
